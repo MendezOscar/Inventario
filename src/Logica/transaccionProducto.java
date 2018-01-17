@@ -26,8 +26,8 @@ public class transaccionProducto {
         try (PreparedStatement stmt = service.con.prepareStatement(query)) {
             stmt.setString(1, pro.getIdProducto());
             stmt.setString(2, pro.getCategotia());
-            stmt.setString(3, pro.getDescripcion());
-            stmt.setString(4, pro.getCategotia());
+            stmt.setString(3, pro.getNombre());
+            stmt.setString(4, pro.getDescripcion());
             stmt.setFloat(5, pro.getPrecio());
             stmt.setInt(6, pro.getContador());
             stmt.executeUpdate();
@@ -44,8 +44,8 @@ public class transaccionProducto {
                 + "WHERE IDPRODUCTO=?";
         try (PreparedStatement stmt = service.con.prepareStatement(query)) {
             stmt.setString(1, pro.getCategotia());
-            stmt.setString(2, pro.getDescripcion());
-            stmt.setString(3, pro.getCategotia());
+            stmt.setString(2, pro.getNombre());
+            stmt.setString(3, pro.getDescripcion());
             stmt.setFloat(4, pro.getPrecio());
             stmt.setString(5, pro.getIdProducto());
             stmt.executeUpdate();
