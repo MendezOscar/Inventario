@@ -1,8 +1,9 @@
 package Interfaz;
 
+import Logica.transaccionInventario;
 import Logica.transaccionProducto;
 import Logica.transaccionSalida;
-import Modelos.Entrada;
+import Modelos.Inventarios;
 import Modelos.Producto;
 import Modelos.Salida;
 import java.awt.Image;
@@ -380,6 +381,7 @@ public final class registrarSalida extends javax.swing.JFrame {
                     Salida sal;
                     sal = enviarDatos();
                     service.createSalida(sal);
+                    saveupdateInventario();
                 } else {
                     JOptionPane.showMessageDialog(null, "EL empleado: " + id + " no se registro");
                 }
@@ -664,7 +666,7 @@ public final class registrarSalida extends javax.swing.JFrame {
     public void setearCodigo() {
         String idEntrada;
         String idProducto = jProducto.getText();
-        idEntrada = idProducto + "-" + "ENT" + "-" + setearnumero();
+        idEntrada = idProducto + "-" + "SAL" + "-" + setearnumero();
         jSalida.setText(idEntrada);
     }
 
@@ -700,6 +702,78 @@ public final class registrarSalida extends javax.swing.JFrame {
 
     private void setearProducto(Producto pro) {
         jNombre.setText(pro.getNombre());
+    }
+    
+    public Inventarios obtenerDatos() {
+        Inventarios inv;
+        String idInventario = jProducto.getText() + "-" + "I";
+        String idProducto = jProducto.getText();
+        String nombre = jNombre.getText();
+        float existencia = Float.parseFloat(jCantidad.getText());
+        int contador = numeroInv();
+        inv = new Inventarios(idInventario, idProducto, nombre, existencia, contador);
+        return inv;
+    }
+    
+    public Inventarios obtenerActualizacion(){
+        Inventarios inv;
+        String idInventario = jProducto.getText() + "-" + "I";
+        String idProducto = jProducto.getText();
+        String nombre = jNombre.getText();
+        float existencia = obtenerExistencia();
+        int contador = numeroInv();
+        inv = new Inventarios(idInventario, idProducto, nombre, existencia, contador);
+        return inv;
+    }
+    
+    public float obtenerExistencia(){
+        try {
+            String id = jProducto.getText() + "-" + "I";
+            transaccionInventario service = new transaccionInventario();
+            Inventarios inv = service.findByIdInventario(id);
+            if(inv.getExistencia() < Float.parseFloat(jCantidad.getText())){
+                JOptionPane.showMessageDialog(null, "Excede de la cantidad en existencia");
+            }
+            return inv.getExistencia() - Float.parseFloat(jCantidad.getText());
+        } catch (SQLException ex) {
+            Logger.getLogger(registrarEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return(float)0.0;
+    }
+
+    public void saveupdateInventario() {
+        try {
+            String id = jProducto.getText() + "-" + "I";
+            transaccionInventario service = new transaccionInventario();
+            if (service.findByIdInventario(id) == null) {
+                Inventarios inv;
+                inv = obtenerDatos();
+                service.createInventario(inv);
+            } else {
+                Inventarios invt = obtenerActualizacion();
+                service.updateInventario(id, invt);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(registrarEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int numeroInv() {
+        try {
+            int numero;
+            transaccionInventario service = new transaccionInventario();
+            ArrayList<Inventarios> depts;
+            depts = (ArrayList<Inventarios>) service.findAllProductos();
+            if (depts.isEmpty()) {
+                numero = 1;
+            } else {
+                numero = depts.size() + 1;
+            }
+            return numero;
+        } catch (SQLException ex) {
+            Logger.getLogger(registrarEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
     }
 
 }

@@ -1,9 +1,11 @@
 package Interfaz;
 
 import Logica.transaccionEntrada;
+import Logica.transaccionInventario;
 import Logica.transaccionProducto;
 import Logica.transaccionProveedor;
 import Modelos.Entrada;
+import Modelos.Inventarios;
 import Modelos.Producto;
 import Modelos.Proveedor;
 import java.awt.Image;
@@ -395,6 +397,7 @@ public final class registrarEntradas extends javax.swing.JFrame {
                     Entrada ent;
                     ent = enviarDatos();
                     service.createEntrada(ent);
+                    saveupdateInventario();
                 } else {
                     JOptionPane.showMessageDialog(null, "EL empleado: " + id + " no se registro");
                 }
@@ -471,10 +474,10 @@ public final class registrarEntradas extends javax.swing.JFrame {
 
     private void jProductoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jProductoKeyPressed
         // TODO add your handling code here:
-         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-             setearCodigo();
-             setearProducto();
-         }
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            setearCodigo();
+            setearProducto();
+        }
     }//GEN-LAST:event_jProductoKeyPressed
 
     private void jNombreMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jNombreMouseClicked
@@ -735,4 +738,72 @@ public final class registrarEntradas extends javax.swing.JFrame {
         jNombre.setText(pro.getNombre());
     }
 
+    public Inventarios obtenerDatos() {
+        Inventarios inv;
+        String idInventario = jProducto.getText() + "-" + "I";
+        String idProducto = jProducto.getText();
+        String nombre = jNombre.getText();
+        float existencia = Float.parseFloat(jCantidad.getText());
+        int contador = numeroInv();
+        inv = new Inventarios(idInventario, idProducto, nombre, existencia, contador);
+        return inv;
+    }
+    
+    public Inventarios obtenerActualizacion(){
+        Inventarios inv;
+        String idInventario = jProducto.getText() + "-" + "I";
+        String idProducto = jProducto.getText();
+        String nombre = jNombre.getText();
+        float existencia = obtenerExistencia();
+        int contador = numeroInv();
+        inv = new Inventarios(idInventario, idProducto, nombre, existencia, contador);
+        return inv;
+    }
+    
+    public float obtenerExistencia(){
+        try {
+            String id = jProducto.getText() + "-" + "I";
+            transaccionInventario service = new transaccionInventario();
+            Inventarios inv = service.findByIdInventario(id);
+            return inv.getExistencia() + Float.parseFloat(jCantidad.getText());
+        } catch (SQLException ex) {
+            Logger.getLogger(registrarEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return(float)0.0;
+    }
+
+    public void saveupdateInventario() {
+        try {
+            String id = jProducto.getText() + "-" + "I";
+            transaccionInventario service = new transaccionInventario();
+            if (service.findByIdInventario(id) == null) {
+                Inventarios inv;
+                inv = obtenerDatos();
+                service.createInventario(inv);
+            } else {
+                Inventarios invt = obtenerActualizacion();
+                service.updateInventario(id, invt);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(registrarEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public int numeroInv() {
+        try {
+            int numero;
+            transaccionInventario service = new transaccionInventario();
+            ArrayList<Inventarios> depts;
+            depts = (ArrayList<Inventarios>) service.findAllProductos();
+            if (depts.isEmpty()) {
+                numero = 1;
+            } else {
+                numero = depts.size() + 1;
+            }
+            return numero;
+        } catch (SQLException ex) {
+            Logger.getLogger(registrarEntradas.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return 0;
+    }
 }

@@ -52,6 +52,8 @@ public final class registrarProducto extends javax.swing.JFrame {
         jDescripcion = new javax.swing.JTextField();
         jLabel33 = new javax.swing.JLabel();
         jPrecio = new javax.swing.JTextField();
+        jLabel34 = new javax.swing.JLabel();
+        jUbicacion = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -255,6 +257,26 @@ public final class registrarProducto extends javax.swing.JFrame {
             }
         });
 
+        jLabel34.setFont(new java.awt.Font("GungsuhChe", 0, 14)); // NOI18N
+        jLabel34.setText("Ubicacion");
+
+        jUbicacion.setFont(new java.awt.Font("GungsuhChe", 0, 14)); // NOI18N
+        jUbicacion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jUbicacionMouseClicked(evt);
+            }
+        });
+        jUbicacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jUbicacionActionPerformed(evt);
+            }
+        });
+        jUbicacion.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jUbicacionKeyPressed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -285,7 +307,11 @@ public final class registrarProducto extends javax.swing.JFrame {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel31)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel34)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 627, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -317,7 +343,11 @@ public final class registrarProducto extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel33)
                     .addComponent(jPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel34)
+                    .addComponent(jUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 13, Short.MAX_VALUE))
         );
 
         pack();
@@ -470,6 +500,18 @@ public final class registrarProducto extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jPrecioKeyPressed
 
+    private void jUbicacionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jUbicacionMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jUbicacionMouseClicked
+
+    private void jUbicacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jUbicacionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jUbicacionActionPerformed
+
+    private void jUbicacionKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jUbicacionKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jUbicacionKeyPressed
+
     /**
      * @param args the command line arguments
      */
@@ -521,6 +563,7 @@ public final class registrarProducto extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel39;
     private javax.swing.JLabel jLabel41;
@@ -529,6 +572,7 @@ public final class registrarProducto extends javax.swing.JFrame {
     private javax.swing.JTextField jProducto;
     private javax.swing.JComboBox<String> jTipo;
     private javax.swing.JToolBar jToolBar3;
+    private javax.swing.JTextField jUbicacion;
     // End of variables declaration//GEN-END:variables
 
     public Producto enviarDatos() {
@@ -539,7 +583,8 @@ public final class registrarProducto extends javax.swing.JFrame {
         int numero = setearnumero();
         String Tipo = jTipo.getSelectedItem().toString();
         float precio = Float.parseFloat(jPrecio.getText());
-        emp = new Producto(idProducto, Tipo, nombre, descripcion, precio, numero);
+        String ubicacion = jUbicacion.getText();
+        emp = new Producto(idProducto, Tipo, nombre, descripcion, precio, ubicacion, numero);
         return emp;
     }
 
@@ -548,6 +593,7 @@ public final class registrarProducto extends javax.swing.JFrame {
         jNombre.setText("");
         jDescripcion.setText("");
         jPrecio.setText("");
+        jUbicacion.setText("");
     }
 
     public void setearBusqueda(Producto pro) {
@@ -557,6 +603,7 @@ public final class registrarProducto extends javax.swing.JFrame {
         jNombre.setText(pro.getNombre());
         jDescripcion.setText(pro.getDescripcion());
         jPrecio.setText(Float.toString(pro.getPrecio()));
+        jUbicacion.setText(pro.getUbicacion());
     }
 
     public int setearnumero() {

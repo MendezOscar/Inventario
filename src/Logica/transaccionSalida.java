@@ -39,16 +39,15 @@ public class transaccionSalida {
 
     public void updateSalida(String id, Salida ent) throws SQLException {
         String query = "UPDATE SALIDAS "
-                + "SET IDSALIDA=?, FECHA=?, IDPRODUCTO=?, PRODUCTO=?, CANTIDAD=?, FACTURA=?"
-                + "WHERE IDENTRADA=?";
+                + "SET FECHA=?, IDPRODUCTO=?, PRODUCTO=?, CANTIDAD=?, FACTURA=?"
+                + "WHERE IDSALIDA=?";
         try (PreparedStatement stmt = service.con.prepareStatement(query)) {
             stmt.setString(1, ent.getFecha());
             stmt.setString(2, ent.getIdProducto());
             stmt.setString(3, ent.getProducto());
             stmt.setFloat(4, ent.getCantidad());
             stmt.setString(5, ent.getFactura());
-            stmt.setInt(6, ent.getContador());
-            stmt.setString(7, ent.getIdEntrada());
+            stmt.setString(6, ent.getIdEntrada());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "La salida: " + id + " se ha actualizado correctamente.");
         } catch (SQLException se) {
@@ -68,6 +67,7 @@ public class transaccionSalida {
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "Codigo de salida: " + id + "se ha borrado.");
         } catch (SQLException se) {
+            System.out.println(se.toString());
             JOptionPane.showMessageDialog(null, "ERROR Codigo de salida: " + id + "no se ha borrado.");
         }
     }
@@ -80,10 +80,11 @@ public class transaccionSalida {
             if (!rs.next()) {
                 return null;
             }
-            return (new Salida(rs.getString("IDENTRADA"), rs.getString("FECHA"), rs.getString("IDPRODUCTO"),
+            return (new Salida(rs.getString("IDSALIDA"), rs.getString("FECHA"), rs.getString("IDPRODUCTO"),
                     rs.getString("PRODUCTO"), rs.getFloat("CANTIDAD"), rs.getString("FACTURA"), rs.getInt("CONTADOR")));
         } catch (SQLException se) {
-            JOptionPane.showMessageDialog(null, "ERROR Codigo de empleado: " + id + " no se ha encontrado.");
+            System.out.println(se.toString());
+            JOptionPane.showMessageDialog(null, "ERROR Codigo de salida: " + id + " no se ha encontrado.");
         }
         return null;
     }
@@ -94,7 +95,7 @@ public class transaccionSalida {
             ResultSet rs = stmt.executeQuery(query);
             ArrayList<Salida> depts = new ArrayList<>();
             while (rs.next()) {
-                depts.add(new Salida(rs.getString("IDENTRADA"), rs.getString("FECHA"), rs.getString("IDPRODUCTO"),
+                depts.add(new Salida(rs.getString("IDSALIDA"), rs.getString("FECHA"), rs.getString("IDPRODUCTO"),
                     rs.getString("PRODUCTO"), rs.getFloat("CANTIDAD"), rs.getString("FACTURA"), rs.getInt("CONTADOR")));
             }
             return depts;

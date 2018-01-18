@@ -21,15 +21,16 @@ public class transaccionProducto {
 
     public void createProducto(Producto pro) {
         String query = "INSERT INTO PRODUCTO "
-                + "(IDPRODUCTO, CATEGORIA, NOMBRE, DESCRIPCION, PRECIO, CONTADOR) "
-                + "VALUES (? , ? , ?, ?, ?, ?)";
+                + "(IDPRODUCTO, CATEGORIA, NOMBRE, DESCRIPCION, PRECIO, UBICACION, CONTADOR) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = service.con.prepareStatement(query)) {
             stmt.setString(1, pro.getIdProducto());
             stmt.setString(2, pro.getCategotia());
             stmt.setString(3, pro.getNombre());
             stmt.setString(4, pro.getDescripcion());
             stmt.setFloat(5, pro.getPrecio());
-            stmt.setInt(6, pro.getContador());
+            stmt.setString(6, pro.getUbicacion());
+            stmt.setInt(7, pro.getContador());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, " El producto: " + pro.getIdProducto() + " se ha guardado Exitosamente.");
         } catch (SQLException se) {
@@ -40,14 +41,15 @@ public class transaccionProducto {
 
     public void updateProducto(String id, Producto pro) throws SQLException {
         String query = "UPDATE PRODUCTO "
-                + "SET CATEGORIA=?, NOMBRE=?, DESCRIPCION=?, PRECIO=?"
+                + "SET CATEGORIA=?, NOMBRE=?, DESCRIPCION=?, PRECIO=?, UBICACION=?"
                 + "WHERE IDPRODUCTO=?";
         try (PreparedStatement stmt = service.con.prepareStatement(query)) {
             stmt.setString(1, pro.getCategotia());
             stmt.setString(2, pro.getNombre());
             stmt.setString(3, pro.getDescripcion());
             stmt.setFloat(4, pro.getPrecio());
-            stmt.setString(5, pro.getIdProducto());
+            stmt.setString(5, pro.getUbicacion());
+            stmt.setString(6, pro.getIdProducto());
             stmt.executeUpdate();
             JOptionPane.showMessageDialog(null, "El Producto: " + id + " se ha actualizado correctamente.");
         } catch (SQLException se) {
@@ -80,7 +82,7 @@ public class transaccionProducto {
                 return null;
             }
             return (new Producto(rs.getString("IDPRODUCTO"), rs.getString("CATEGORIA"), rs.getString("NOMBRE"),
-                    rs.getString("DESCRIPCION"), rs.getFloat("PRECIO"), rs.getInt("CONTADOR")));
+                    rs.getString("DESCRIPCION"), rs.getFloat("PRECIO"), rs.getString("UBICACION"), rs.getInt("CONTADOR")));
         } catch (SQLException se) {
             JOptionPane.showMessageDialog(null, "ERROR Codigo de empleado: " + id + " no se ha encontrado.");
         }
@@ -94,7 +96,7 @@ public class transaccionProducto {
             ArrayList<Producto> depts = new ArrayList<>();
             while (rs.next()) {
                 depts.add(new Producto(rs.getString("IDPRODUCTO"), rs.getString("CATEGORIA"), rs.getString("NOMBRE"),
-                    rs.getString("DESCRIPCION"), rs.getFloat("PRECIO"), rs.getInt("CONTADOR")));
+                    rs.getString("DESCRIPCION"), rs.getFloat("PRECIO"), rs.getString("UBICACION"), rs.getInt("CONTADOR")));
             }
             return depts;
         } catch (SQLException se) {
@@ -103,7 +105,7 @@ public class transaccionProducto {
         }
         return null;
     }
-    
+
     public List<Producto> obtenerUltimoProductobyCategoria(String tipo) {
         try {
             String query = "SELECT * FROM PRODUCTO WHERE CATEGORIA = " + "'" + tipo + "'" + " ORDER BY CONTADOR DESC";
@@ -112,7 +114,7 @@ public class transaccionProducto {
             ArrayList<Producto> depts = new ArrayList<>();
             while (rs.next()) {
                 depts.add(new Producto(rs.getString("IDPRODUCTO"), rs.getString("CATEGORIA"), rs.getString("NOMBRE"),
-                    rs.getString("DESCRIPCION"), rs.getFloat("PRECIO"), rs.getInt("CONTADOR")));
+                    rs.getString("DESCRIPCION"), rs.getFloat("PRECIO"), rs.getString("UBICACION"), rs.getInt("CONTADOR")));
             }
             return depts;
         } catch (SQLException ex) {

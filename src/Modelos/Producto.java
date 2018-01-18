@@ -11,14 +11,17 @@ public class Producto {
     String Nombre;
     String Descripcion;
     float precio;
+    String Ubicacion;
     int contador;
 
-    public Producto(String idProducto, String Categotia, String Nombre, String Descripcion, float precio, int contador) {
+    public Producto(String idProducto, String Categotia, String Nombre, String Descripcion, float precio, 
+            String Ubicacion, int contador) {
         this.idProducto = idProducto;
         this.Categotia = Categotia;
         this.Nombre = Nombre;
         this.Descripcion = Descripcion;
         this.precio = precio;
+        this.Ubicacion = Ubicacion;
         this.contador = contador;
     }
 
@@ -69,6 +72,13 @@ public class Producto {
     public void setContador(int contador) {
         this.contador = contador;
     }
-   
+
+    public String getUbicacion() {
+        return Ubicacion;
+    }
+
+    public void setUbicacion(String Ubicacion) {
+        this.Ubicacion = Ubicacion;
+    }
 }
             
