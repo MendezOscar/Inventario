@@ -12,16 +12,18 @@ public class Producto {
     String Descripcion;
     float precio;
     String Ubicacion;
+    float Minino;
     int contador;
 
     public Producto(String idProducto, String Categotia, String Nombre, String Descripcion, float precio, 
-            String Ubicacion, int contador) {
+            String Ubicacion, float Minimo, int contador) {
         this.idProducto = idProducto;
         this.Categotia = Categotia;
         this.Nombre = Nombre;
         this.Descripcion = Descripcion;
         this.precio = precio;
         this.Ubicacion = Ubicacion;
+        this.Minino = Minimo;
         this.contador = contador;
     }
 
@@ -80,5 +82,15 @@ public class Producto {
     public void setUbicacion(String Ubicacion) {
         this.Ubicacion = Ubicacion;
     }
+
+    public float getMinino() {
+        return Minino;
+    }
+
+    public void setMinino(float Minino) {
+        this.Minino = Minino;
+    }
+    
+    
 }
             
