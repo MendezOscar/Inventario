@@ -87,6 +87,8 @@ public class Login extends javax.swing.JFrame {
         if ("Ferreteria".equals(usuario.getText()) && "ferreteriadb".equals(jClave.getText())) {
             Menu mn = new Menu();
             mn.setVisible(true);
+            Notificaciones notify = new Notificaciones();
+            notify.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Conexion fallida");
         }

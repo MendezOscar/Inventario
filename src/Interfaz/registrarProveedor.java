@@ -77,7 +77,7 @@ public final class registrarProveedor extends javax.swing.JFrame {
         });
         jToolBar3.add(jButton3);
 
-        jLabel14.setForeground(new java.awt.Color(204, 255, 255));
+        jLabel14.setForeground(new java.awt.Color(204, 204, 204));
         jLabel14.setText(".......");
         jToolBar3.add(jLabel14);
 
@@ -98,7 +98,7 @@ public final class registrarProveedor extends javax.swing.JFrame {
         });
         jToolBar3.add(jButton4);
 
-        jLabel15.setForeground(new java.awt.Color(204, 255, 255));
+        jLabel15.setForeground(new java.awt.Color(204, 204, 204));
         jLabel15.setText(".......");
         jToolBar3.add(jLabel15);
 
@@ -119,7 +119,7 @@ public final class registrarProveedor extends javax.swing.JFrame {
         });
         jToolBar3.add(jButton5);
 
-        jLabel16.setForeground(new java.awt.Color(204, 255, 255));
+        jLabel16.setForeground(new java.awt.Color(204, 204, 204));
         jLabel16.setText(".......");
         jToolBar3.add(jLabel16);
 
@@ -140,7 +140,7 @@ public final class registrarProveedor extends javax.swing.JFrame {
         });
         jToolBar3.add(jButton6);
 
-        jLabel17.setForeground(new java.awt.Color(204, 255, 255));
+        jLabel17.setForeground(new java.awt.Color(204, 204, 204));
         jLabel17.setText(".......");
         jToolBar3.add(jLabel17);
 

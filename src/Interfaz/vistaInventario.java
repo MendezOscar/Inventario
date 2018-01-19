@@ -66,7 +66,7 @@ public final class vistaInventario extends javax.swing.JFrame {
         jLabel41.setForeground(new java.awt.Color(204, 204, 255));
         jToolBar3.add(jLabel41);
 
-        jLabel14.setForeground(new java.awt.Color(204, 255, 255));
+        jLabel14.setForeground(new java.awt.Color(204, 204, 204));
         jLabel14.setText(".......");
         jToolBar3.add(jLabel14);
 

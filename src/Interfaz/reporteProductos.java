@@ -1,13 +1,14 @@
+
 package Interfaz;
 
-import Logica.transaccionInventario;
+import Logica.ServiciosDB;
 import Logica.transaccionProducto;
-import Modelos.Inventarios;
-import Modelos.Producto;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.RowFilter;
@@ -18,14 +19,13 @@ import javax.swing.table.TableRowSorter;
  *
  * @author Oscar Mendez
  */
-public final class Notificaciones extends javax.swing.JFrame {
+public final class reporteProductos extends javax.swing.JFrame {
 
-    DefaultTableModel modelo = new DefaultTableModel();
+   DefaultTableModel modelo = new DefaultTableModel();
     public TableRowSorter trsFiltro;
-
-    public Notificaciones() {
+    public reporteProductos() {
         initComponents();
-        setNotificaciones();
+        mostrarDatos();
     }
 
     @SuppressWarnings("unchecked")
@@ -97,24 +97,15 @@ public final class Notificaciones extends javax.swing.JFrame {
         jLabel18.setForeground(new java.awt.Color(204, 204, 255));
         jToolBar1.add(jLabel18);
 
-        jTable2.setFont(new java.awt.Font("GungsuhChe", 0, 14)); // NOI18N
+        jTable2.setFont(new java.awt.Font("Consolas", 0, 11)); // NOI18N
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {}
             },
             new String [] {
-                "Nª", "Producto", "Descripcion", "Existencia", "Cantidad Minima", "Nesecidad"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-            };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
             }
-        });
+        ));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jTable2MouseClicked(evt);
@@ -131,8 +122,8 @@ public final class Notificaciones extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 757, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addComponent(jToolBar1, javax.swing.GroupLayout.DEFAULT_SIZE, 805, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane2)
                 .addContainerGap())
@@ -142,8 +133,8 @@ public final class Notificaciones extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jToolBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(31, Short.MAX_VALUE))
         );
 
         pack();
@@ -176,6 +167,9 @@ public final class Notificaciones extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTable2KeyPressed
 
+    /**
+     * @param args the command line arguments
+     */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -190,19 +184,19 @@ public final class Notificaciones extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Notificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(reporteProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Notificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(reporteProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Notificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(reporteProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Notificaciones.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(reporteProductos.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new Notificaciones().setVisible(true);
+            new reporteProductos().setVisible(true);
         });
     }
 
@@ -221,46 +215,49 @@ public final class Notificaciones extends javax.swing.JFrame {
     private javax.swing.JTextField txtFiltro;
     // End of variables declaration//GEN-END:variables
 
+     public void mostrarDatos() {
+        try {
+            generarColumnas();
+            ServiciosDB s = new ServiciosDB();
+            transaccionProducto service = new transaccionProducto();
+            String query = "SELECT * FROM PRODUCTO ORDER BY CONTADOR ASC";
+            Statement st = s.con.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            this.jTable2.setModel(modelo);
+            ResultSetMetaData rsMd = rs.getMetaData();
+            int cantidadColumnas = rsMd.getColumnCount();
+            while (rs.next()) {
+                Object[] fila = new Object[cantidadColumnas];
+                for (int i = 0; i < cantidadColumnas; i++) {
+                    fila[i] = rs.getObject(i + 1);
+                }
+                modelo.addRow(fila);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(reporteProductos.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void generarColumnas() {
+        modelo.addColumn("CODIGO");
+        modelo.addColumn("CATEGORIA");
+        modelo.addColumn("NOMBRE");
+        modelo.addColumn("DESCRIPCION");
+        modelo.addColumn("PRECIO");
+        modelo.addColumn("UBICACION");
+        modelo.addColumn("MINIMO");
+
+    }
+
     public void filtro() {
         int columnaABuscar = 0;
-        if (comboFiltro.getSelectedItem() == "CODIGO") {
+        if (comboFiltro.getSelectedItem() == "Codigo") {
             columnaABuscar = 0;
         }
-        if (comboFiltro.getSelectedItem() == "NOMBRE") {
+        if (comboFiltro.getSelectedItem() == "Nombre") {
             columnaABuscar = 1;
         }
         trsFiltro.setRowFilter(RowFilter.regexFilter(txtFiltro.getText(), columnaABuscar));
     }
 
-    public void setNotificaciones() {
-        try {
-            transaccionInventario service = new transaccionInventario();
-            transaccionProducto serv = new transaccionProducto();
-            Producto pro;
-            ArrayList<Inventarios> depts;
-            Inventarios inv;
-            depts = (ArrayList<Inventarios>) service.findAllProductos();
-            for (int x = 0; x < depts.size(); x++){
-                inv = depts.get(x);
-                pro = serv.findByIdProducto(inv.getIdProducto());
-                if(inv.getExistencia() < pro.getMinino()){
-                    agregarFilas();
-                    jTable2.setValueAt(x + 1, x, 0);
-                    jTable2.setValueAt(inv.getProducto(), x, 1);
-                    jTable2.setValueAt(pro.getDescripcion(), x, 2);
-                    jTable2.setValueAt(inv.getExistencia(), x, 3);
-                    jTable2.setValueAt(pro.getMinino(), x, 4);
-                    jTable2.setValueAt(pro.getMinino()-inv.getExistencia(), x, 5);
-                }
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Notificaciones.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void agregarFilas() {
-        DefaultTableModel temp = (DefaultTableModel) jTable2.getModel();
-        Object nuevo[] = {"", "", "", "", "", "", "", "", "", "", ""};
-        temp.addRow(nuevo);
-    }
 }
